@@ -37,16 +37,20 @@ roots
 ## Running Locally
 
 Start the database:
+
 docker compose up -d
 
 Run backend:
+
 cd backend
 ./mvnw spring-boot:run
 
 Run frontend:
+
 cd frontend
 npm install
 npm run dev
 
 Open:
+
 http://localhost:3000
