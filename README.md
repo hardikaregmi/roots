@@ -29,9 +29,9 @@ Infrastructure
 
 ## Project Structure
 roots
-├ backend # Spring Boot API
-├ frontend # Next.js frontend
-├ docker-compose.yml
+backend # Spring Boot API
+frontend # Next.js frontend
+docker-compose.yml
 
 
 ## Running Locally
