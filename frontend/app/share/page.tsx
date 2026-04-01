@@ -1,9 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { API_BASE_URL } from "@/lib/api";
 
 const storySchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
@@ -18,7 +20,8 @@ const storySchema = z.object({
 type StoryFormData = z.infer<typeof storySchema>;
 
 export default function SharePage() {
-  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const {
     register,
@@ -42,13 +45,16 @@ export default function SharePage() {
   const isAnonymous = watch("isAnonymous");
 
   const onSubmit = async (data: StoryFormData) => {
+    setStatus("idle");
+    setErrorMessage("");
+
     try {
       const payload = {
         ...data,
         authorName: data.isAnonymous ? "" : data.authorName,
       };
 
-      const res = await fetch("http://localhost:8080/api/stories", {
+      const res = await fetch(`${API_BASE_URL}/api/stories`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,16 +66,64 @@ export default function SharePage() {
         throw new Error("Failed to submit story");
       }
 
-      setMessage("Your story was shared successfully.");
+      setStatus("success");
       reset();
-    } catch (error) {
-      setMessage("Something went wrong while sharing your story.");
-      console.error(error);
+    } catch {
+      setStatus("error");
+      setErrorMessage(
+        "Something went wrong while sharing your story. Please try again."
+      );
     }
   };
 
   const inputClasses =
     "w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 placeholder-warm-300 outline-none transition-colors duration-200 focus:border-warm-400 focus:ring-1 focus:ring-warm-300";
+
+  if (status === "success") {
+    return (
+      <main className="min-h-screen px-6 py-14">
+        <div className="mx-auto max-w-2xl">
+          <div className="rounded-2xl border border-warm-200 bg-white/70 p-10 text-center shadow-sm">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-warm-100">
+              <svg
+                className="h-6 w-6 text-warm-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4.5 12.75l6 6 9-13.5"
+                />
+              </svg>
+            </div>
+            <h2 className="mb-2 text-xl font-semibold text-warm-900">
+              Your story was shared
+            </h2>
+            <p className="mb-6 text-warm-500">
+              Thank you for sharing. Your story helps others feel less alone.
+            </p>
+            <div className="flex flex-col justify-center gap-3 sm:flex-row">
+              <Link
+                href="/stories"
+                className="rounded-xl border border-warm-300 px-6 py-3 text-sm font-medium text-warm-700 transition-colors duration-200 hover:bg-warm-100"
+              >
+                Read stories
+              </Link>
+              <button
+                onClick={() => setStatus("idle")}
+                className="rounded-xl bg-warm-800 px-6 py-3 text-sm font-medium text-warm-50 transition-colors duration-200 hover:bg-warm-700"
+              >
+                Share another story
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen px-6 py-14">
@@ -85,6 +139,12 @@ export default function SharePage() {
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-6 rounded-2xl border border-warm-200 bg-white/70 p-8 shadow-sm"
         >
+          {status === "error" && (
+            <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {errorMessage}
+            </div>
+          )}
+
           <div>
             <label className="mb-2 block text-sm font-medium text-warm-700">
               Title
@@ -190,8 +250,6 @@ export default function SharePage() {
           >
             {isSubmitting ? "Sharing..." : "Share story"}
           </button>
-
-          {message && <p className="text-sm text-warm-600">{message}</p>}
         </form>
       </div>
     </main>

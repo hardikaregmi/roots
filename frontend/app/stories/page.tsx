@@ -1,4 +1,6 @@
+import Link from "next/link";
 import StoryList from "@/components/StoryList";
+import { API_BASE_URL } from "@/lib/api";
 
 type Story = {
   id: number;
@@ -12,25 +14,32 @@ type Story = {
   createdAt: string;
 };
 
-async function getStories(): Promise<Story[]> {
+type FetchResult =
+  | { ok: true; stories: Story[] }
+  | { ok: false; error: string };
+
+async function getStories(): Promise<FetchResult> {
   try {
-    const res = await fetch("http://localhost:8080/api/stories", {
+    const res = await fetch(`${API_BASE_URL}/api/stories`, {
       cache: "no-store",
     });
 
     if (!res.ok) {
-      throw new Error("Failed to fetch stories");
+      return { ok: false, error: "We couldn't load stories right now." };
     }
 
-    return res.json();
-  } catch (error) {
-    console.error(error);
-    return [];
+    const stories: Story[] = await res.json();
+    return { ok: true, stories };
+  } catch {
+    return {
+      ok: false,
+      error: "Unable to connect to the server. Please try again later.",
+    };
   }
 }
 
 export default async function StoriesPage() {
-  const stories = await getStories();
+  const result = await getStories();
 
   return (
     <main className="min-h-screen px-6 py-14">
@@ -42,7 +51,19 @@ export default async function StoriesPage() {
           Read stories of leaving, becoming, and belonging.
         </p>
 
-        <StoryList stories={stories} />
+        {result.ok ? (
+          <StoryList stories={result.stories} />
+        ) : (
+          <div className="rounded-2xl border border-warm-200 bg-white/70 p-10 text-center shadow-sm">
+            <p className="mb-4 text-warm-500">{result.error}</p>
+            <Link
+              href="/stories"
+              className="text-sm font-medium text-warm-700 underline underline-offset-4 transition-colors duration-200 hover:text-warm-900"
+            >
+              Try again
+            </Link>
+          </div>
+        )}
       </div>
     </main>
   );

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { API_BASE_URL } from "@/lib/api";
 
 type Story = {
   id: number;
@@ -15,7 +16,7 @@ type Story = {
 
 async function getStory(id: string): Promise<Story | null> {
   try {
-    const res = await fetch(`http://localhost:8080/api/stories/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/api/stories/${id}`, {
       cache: "no-store",
     });
 
@@ -24,8 +25,7 @@ async function getStory(id: string): Promise<Story | null> {
     }
 
     return res.json();
-  } catch (error) {
-    console.error(error);
+  } catch {
     return null;
   }
 }

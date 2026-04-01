@@ -53,10 +53,55 @@ export default function StoryList({ stories }: { stories: Story[] }) {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="rounded-2xl border border-warm-200 bg-white/70 p-10 text-center text-warm-400 shadow-sm">
-          {stories.length === 0
-            ? "No stories have been shared yet."
-            : "No stories in this category yet."}
+        <div className="rounded-2xl border border-warm-200 bg-white/70 p-10 text-center shadow-sm">
+          {stories.length === 0 ? (
+            <>
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-warm-100">
+                <svg
+                  className="h-6 w-6 text-warm-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
+                  />
+                </svg>
+              </div>
+              <p className="mb-2 text-lg font-medium text-warm-700">
+                No stories yet
+              </p>
+              <p className="mb-6 text-sm text-warm-400">
+                Be the first to share your story and help others feel less
+                alone.
+              </p>
+              <Link
+                href="/share"
+                className="inline-block rounded-xl bg-warm-800 px-6 py-3 text-sm font-medium text-warm-50 transition-colors duration-200 hover:bg-warm-700"
+              >
+                Share your story
+              </Link>
+            </>
+          ) : (
+            <>
+              <p className="mb-2 text-lg font-medium text-warm-700">
+                No stories in this category
+              </p>
+              <p className="text-sm text-warm-400">
+                Try selecting a different category, or{" "}
+                <Link
+                  href="/share"
+                  className="font-medium text-warm-600 underline underline-offset-4 transition-colors duration-200 hover:text-warm-800"
+                >
+                  share one yourself
+                </Link>
+                .
+              </p>
+            </>
+          )}
         </div>
       ) : (
         <div className="grid gap-5">

@@ -1,5 +1,6 @@
 package com.roots.backend.service;
 
+import com.roots.backend.exception.StoryNotFoundException;
 import com.roots.backend.model.Story;
 import com.roots.backend.repository.StoryRepository;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class StoryService {
     }
 
     public Story getStoryById(Long id) {
-        return storyRepository.findById(id).orElse(null);
+        return storyRepository.findById(id)
+                .orElseThrow(() -> new StoryNotFoundException(id));
     }
 }
