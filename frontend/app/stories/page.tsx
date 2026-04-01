@@ -48,7 +48,7 @@ export default async function StoriesPage() {
           Stories
         </h1>
         <p className="mb-10 text-warm-500">
-          Read stories of leaving, becoming, and belonging.
+          Real experiences from the immigrant community.
         </p>
 
         {result.ok ? (

@@ -108,13 +108,13 @@ export default function SharePage() {
             <div className="flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href="/stories"
-                className="rounded-xl border border-warm-300 px-6 py-3 text-sm font-medium text-warm-700 transition-colors duration-200 hover:bg-warm-100"
+                className="rounded-xl border border-warm-300 px-8 py-3.5 text-sm font-medium text-warm-700 transition-all duration-200 hover:border-warm-400 hover:bg-warm-100"
               >
                 Read stories
               </Link>
               <button
                 onClick={() => setStatus("idle")}
-                className="rounded-xl bg-warm-800 px-6 py-3 text-sm font-medium text-warm-50 transition-colors duration-200 hover:bg-warm-700"
+                className="rounded-xl bg-warm-800 px-8 py-3.5 text-sm font-medium text-warm-50 shadow-sm transition-all duration-200 hover:bg-warm-700 hover:shadow-md"
               >
                 Share another story
               </button>
@@ -132,12 +132,12 @@ export default function SharePage() {
           Share your story
         </h1>
         <p className="mb-10 text-warm-500">
-          Roots is a space for stories of leaving, becoming, and belonging.
+          Your experience matters. Share it with the Roots community.
         </p>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-6 rounded-2xl border border-warm-200 bg-white/70 p-8 shadow-sm"
+          className="space-y-6 rounded-2xl border border-warm-200 bg-white/70 p-8 shadow-sm sm:p-10"
         >
           {status === "error" && (
             <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -246,7 +246,7 @@ export default function SharePage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="rounded-xl bg-warm-800 px-6 py-3 text-sm font-medium text-warm-50 transition-colors duration-200 hover:bg-warm-700 disabled:opacity-50"
+            className="rounded-xl bg-warm-800 px-8 py-3.5 text-sm font-medium text-warm-50 shadow-sm transition-all duration-200 hover:bg-warm-700 hover:shadow-md disabled:opacity-50"
           >
             {isSubmitting ? "Sharing..." : "Share story"}
           </button>

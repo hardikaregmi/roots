@@ -80,7 +80,7 @@ export default function StoryList({ stories }: { stories: Story[] }) {
               </p>
               <Link
                 href="/share"
-                className="inline-block rounded-xl bg-warm-800 px-6 py-3 text-sm font-medium text-warm-50 transition-colors duration-200 hover:bg-warm-700"
+                className="inline-block rounded-xl bg-warm-800 px-6 py-3 text-sm font-medium text-warm-50 transition-all duration-200 hover:bg-warm-700 hover:shadow-md"
               >
                 Share your story
               </Link>
@@ -109,43 +109,63 @@ export default function StoryList({ stories }: { stories: Story[] }) {
             <Link
               key={story.id}
               href={`/stories/${story.id}`}
-              className="group block rounded-2xl border border-warm-200 bg-white/70 p-6 shadow-sm transition-all duration-200 hover:border-warm-300 hover:shadow-md"
+              className="group block rounded-2xl border border-warm-200 bg-white/70 p-6 shadow-sm transition-all duration-200 hover:border-warm-300 hover:shadow-md sm:p-7"
             >
-              <div className="mb-3 flex flex-wrap items-center gap-2">
+              <div className="mb-4 flex flex-wrap items-center gap-2">
                 <span className="rounded-full bg-warm-100 px-3 py-1 text-xs font-medium text-warm-600">
                   {story.category}
                 </span>
-
-                <span className="rounded-full bg-warm-100 px-3 py-1 text-xs font-medium text-warm-600">
-                  {story.isAnonymous ? "Anonymous" : "Public"}
-                </span>
+                {story.isAnonymous && (
+                  <span className="rounded-full bg-warm-100 px-3 py-1 text-xs font-medium text-warm-400">
+                    Anonymous
+                  </span>
+                )}
               </div>
 
-              <h2 className="mb-2 text-xl font-semibold text-warm-900 transition-colors duration-200 group-hover:text-warm-700">
-                {story.title}
-              </h2>
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0 flex-1">
+                  <h2 className="mb-2 text-xl font-semibold text-warm-900 transition-colors duration-200 group-hover:text-warm-700">
+                    {story.title}
+                  </h2>
 
-              <p className="mb-4 line-clamp-3 leading-relaxed text-warm-600">
-                {story.content}
-              </p>
+                  <p className="mb-4 line-clamp-2 leading-relaxed text-warm-500">
+                    {story.content}
+                  </p>
 
-              <div className="space-y-1 text-sm text-warm-400">
-                <p>
-                  <span className="font-medium text-warm-500">From:</span>{" "}
-                  {story.originCountry || "Not shared"}
-                </p>
-                <p>
-                  <span className="font-medium text-warm-500">Now in:</span>{" "}
-                  {story.currentCountry || "Not shared"}
-                </p>
-                <p>
-                  <span className="font-medium text-warm-500">
-                    Shared by:
-                  </span>{" "}
-                  {story.isAnonymous
-                    ? "Anonymous"
-                    : story.authorName || "Unknown"}
-                </p>
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-warm-400">
+                    <span>
+                      {story.isAnonymous
+                        ? "Anonymous"
+                        : story.authorName || "Unknown"}
+                    </span>
+                    {story.originCountry && (
+                      <>
+                        <span className="text-warm-300">&middot;</span>
+                        <span>From {story.originCountry}</span>
+                      </>
+                    )}
+                    {story.currentCountry && (
+                      <>
+                        <span className="text-warm-300">&middot;</span>
+                        <span>Now in {story.currentCountry}</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <svg
+                  className="mt-1 hidden h-5 w-5 flex-shrink-0 text-warm-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-warm-500 sm:block"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                  />
+                </svg>
               </div>
             </Link>
           ))}

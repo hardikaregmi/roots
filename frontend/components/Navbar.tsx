@@ -17,7 +17,7 @@ export default function Navbar() {
   const [logoError, setLogoError] = useState(false);
 
   return (
-    <header className="border-b border-warm-200 bg-warm-50">
+    <header className="sticky top-0 z-50 border-b border-warm-200 bg-warm-50/90 backdrop-blur-md">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link
           href="/"
